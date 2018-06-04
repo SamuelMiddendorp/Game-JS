@@ -25,13 +25,14 @@ function Player(){
   }
   this.Jump = function(){
     this.jump = true;
-    if (this.jump && this.jumptimer <= 4){
+    if (this.jump && this.jumptimer <= 6){
       this.jumptimer += 1;
       this.y -= (this.speedy);
     }
     else{
       this.jump = false;
     }
+
   }
   this.Gravity = function(){
     this.y += this.gravspeed;
