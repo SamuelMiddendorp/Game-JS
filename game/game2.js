@@ -2,20 +2,49 @@ var GameArea = document.getElementById('GameArea').getContext('2d');
 function Player(){
   this.x = 0;
   this.y = 0;
-  this.width = 200;
-  this.height = 100;
+  this.width = 20;
+  this.height = 50;
   this.speedx = 4;
-  this.speedy = 4;
+  this.gravspeed = 4;
+  this.speedy = 20;
+  this.jumptimer = 0;
+  this.jump = false;
+  this.onground = false;
   this.dir = ""
   this.Main = function(){
     this.Draw(GameArea);
+    this.Gravity();
+    this.Collision();
   }
   this.Draw = function(GameArea){
     GameArea.fillRect(this.x,this.y,this.width,this.height);
   }
   this.Move = function(x,y){
-    this.x += x;
-    this.y += y;
+    this.x += x*this.speedx;
+    this.y += y*this.speedy;
+  }
+  this.Jump = function(){
+    this.jump = true;
+    if (this.jump && this.jumptimer <= 4){
+      this.jumptimer += 1;
+      this.y -= (this.speedy);
+    }
+    else{
+      this.jump = false;
+    }
+  }
+  this.Gravity = function(){
+    this.y += this.gravspeed;
+  }
+  this.Collision = function(){
+    if (this.y >= 300){
+      this.onground = true;
+      this.jumptimer = 0;
+      this.y = 300;
+    }
+    else{
+      this.onground = false;
+    }
   }
 }
 leftpressed = false;
@@ -69,7 +98,7 @@ function GameLoop(){
     player.Move(1,0);
   }
   if(uppressed){
-    player.Move(0,-1);
+    player.Jump();
   }
   else if(downpressed){
     player.Move(0,1);
